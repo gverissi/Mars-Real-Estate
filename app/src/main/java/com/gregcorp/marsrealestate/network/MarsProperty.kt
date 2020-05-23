@@ -17,4 +17,16 @@
 
 package com.gregcorp.marsrealestate.network
 
-class MarsProperty()
+import com.squareup.moshi.Json
+
+/**
+ * The properties must match the JSON response fields.
+ *
+ * Rename the img_src class property to imgSrcUrl,
+ * and add a @Json annotation to remap the img_src JSON field to it.
+ */
+data class MarsProperty(
+    val id: String,
+    @Json(name = "img_src") val imgSrcUrl: String,
+    val type: String,
+    val price: Double)
