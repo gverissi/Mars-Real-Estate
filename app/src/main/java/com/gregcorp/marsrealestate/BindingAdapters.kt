@@ -20,8 +20,18 @@ package com.gregcorp.marsrealestate
 import android.widget.ImageView
 import androidx.core.net.toUri
 import androidx.databinding.BindingAdapter
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.gregcorp.marsrealestate.network.MarsProperty
+import com.gregcorp.marsrealestate.overview.PhotoGridAdapter
+
+
+@BindingAdapter("listData")
+fun bindRecyclerView(recyclerView: RecyclerView, data: List<MarsProperty>?) {
+    val adapter = recyclerView.adapter as PhotoGridAdapter
+    adapter.submitList(data)
+}
 
 // Execute this adapter when an XML file have the attribute imageUrl
 @BindingAdapter("imageUrl")
