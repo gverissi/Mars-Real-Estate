@@ -17,3 +17,23 @@
 
 package com.gregcorp.marsrealestate
 
+import android.widget.ImageView
+import androidx.core.net.toUri
+import androidx.databinding.BindingAdapter
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
+
+// Execute this adapter when an XML file have the attribute imageUrl
+@BindingAdapter("imageUrl")
+fun bindingImage(imgView: ImageView, imgUrl: String?) {
+    imgUrl?.let {
+        // Glide require a URI object an the server needs a HTTPS scheme
+        val imgUri = it.toUri().buildUpon().scheme("https").build()
+        // We use Glide to display the image (Glide need to know the context to access some resources)
+        Glide.with(imgView.context).load(imgUri)
+            .apply(RequestOptions()
+                .placeholder(R.drawable.loading_animation) // We display an animation wile the image is loading
+                .error(R.drawable.ic_broken_image) // We display a broken image if there is an error
+            ).into(imgView)
+    }
+}
