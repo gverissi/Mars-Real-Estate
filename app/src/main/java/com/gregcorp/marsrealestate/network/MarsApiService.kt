@@ -17,9 +17,11 @@
 
 package com.gregcorp.marsrealestate.network
 
+import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
-import retrofit2.Call
+import kotlinx.coroutines.Deferred
+//import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 //import retrofit2.converter.scalars.ScalarsConverterFactory
@@ -43,6 +45,7 @@ private val moshi = Moshi.Builder()
 private val retrofit = Retrofit.Builder()
 //    .addConverterFactory(ScalarsConverterFactory.create()) // Convert Json response into a string.
     .addConverterFactory(MoshiConverterFactory.create()) // Use Moshi to convert Json response into a Kotlin object.
+    .addCallAdapterFactory(CoroutineCallAdapterFactory()) // Allow to use Coroutine for the Call
     .baseUrl(BASE_URL)
     .build()
 
@@ -54,8 +57,7 @@ private val retrofit = Retrofit.Builder()
  */
 interface MarsApiService {
     @GET("realestate")
-    fun getProperties():
-            Call<List<MarsProperty>>
+    fun getPropertiesAsync(): Deferred<List<MarsProperty>>
 }
 
 /**
