@@ -17,17 +17,21 @@
 
 package com.gregcorp.marsrealestate.network
 
+import android.os.Parcelable
 import com.squareup.moshi.Json
+import kotlinx.android.parcel.Parcelize
 
 /**
  * The properties must match the JSON response fields.
  *
  * Rename the img_src class property to imgSrcUrl,
  * and add a @Json annotation to remap the img_src JSON field to it.
+ *
+ * This class implements Parcelable to pass data between fragment_overview.xml and fragment_detail.xml,
+ * we use the annotation @Parcelize who implements the Parcelable for us.
  */
-data class MarsProperty(
-    val id: String,
-    // used to map img_src from the JSON to imgSrcUrl in our class
-    @field:Json(name = "img_src") val imgSrcUrl: String,
-    val type: String,
-    val price: Double)
+@Parcelize
+data class MarsProperty(val id: String,
+                        @field:Json(name = "img_src") val imgSrcUrl: String, // used to map img_src from the JSON to imgSrcUrl in our class
+                        val type: String,
+                        val price: Double) : Parcelable
