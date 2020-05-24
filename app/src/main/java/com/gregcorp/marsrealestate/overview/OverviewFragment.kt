@@ -20,10 +20,12 @@ package com.gregcorp.marsrealestate.overview
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.gregcorp.marsrealestate.R
 import com.gregcorp.marsrealestate.databinding.FragmentOverviewBinding
-import com.gregcorp.marsrealestate.databinding.GridViewItemBinding
+//import com.gregcorp.marsrealestate.databinding.GridViewItemBinding
 
 /**
  * This fragment shows the the status of the Mars real-estate web services transaction.
@@ -61,7 +63,20 @@ class OverviewFragment : Fragment() {
          * LHS: photosGrid is the RecyclerView id in fragment_overview.xml.
          * RHS: PhotoGridAdapter is the adapter of the RecyclerView
          */
-        binding.photosGrid.adapter = PhotoGridAdapter()
+        binding.photosGrid.adapter = PhotoGridAdapter(
+            PhotoGridAdapter.OnClickListener {
+                viewModel.displayPropertyDetails(it)
+            }
+        )
+
+        viewModel.navigateToSelectedProperty.observe(viewLifecycleOwner,
+            Observer {
+                if (it !=null) {
+                    this.findNavController().navigate(OverviewFragmentDirections.actionShowDetail(it))
+                    viewModel.displayPropertyDetailsComplete()
+                }
+            }
+        )
 
         setHasOptionsMenu(true)
         return binding.root
